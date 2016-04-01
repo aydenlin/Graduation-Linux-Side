@@ -10,6 +10,7 @@ typedef int Conn(MYSQL *conn, char *opt_host_name,
 			char *opt_socket_name, unsigned int opt_flags);
 typedef void Disconn(MYSQL *conn);
 typedef void Write_to_db(Database *D, void *data, int flag);
+
 typedef struct database {
 	MYSQL *conn;
 	Init *init;

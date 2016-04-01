@@ -1,14 +1,22 @@
 #include "location.h"
 
-void setloc(Location *L, double longtitude, double latitude) {
-	L->longtitude = longtitude;
-	L->latitude = latitude;
+void init_location(Location *L, double lon, double lat) {
+	L->longtitude = lon;
+	L->latitude   = lat;
+	L->setloc     = setloc;
+	L->getlong    = getlong;
+	L->getlat     = getlat;
 }
 
-void getlong(Location *L) {
+void setloc(Location *L, double longtitude, double latitude) {
+	L->longtitude = longtitude;
+	L->latitude   = latitude;
+}
+
+double getlong(Location *L) {
 	return L->longtitude;
 }
 
-void getlat(Location *L) {
+double getlat(Location *L) {
 	return L->latitude;
 }

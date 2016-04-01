@@ -7,8 +7,9 @@
 #ifndef NULL
 #define NULL 0
 #endif /* NULL */
+
 #define _TYPE_ byte *
-#define INIT_LIST_ELEMENTS(list, val) do { \
+#define INIT_LIST_ELEMENT(list, val) do { \
 	list = (List *)malloc(sizeof(List)); \
 	list->obj = val; \
 	list->prev = NULL; \

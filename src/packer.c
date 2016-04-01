@@ -8,7 +8,7 @@ void unpack(byte *bytes, void *buf, int flag) {
 	switch(flag) {
 		case _CERTIFICATION_PACKET_:
 			break;
-		case _LOCATION_PAKET_:
+		case _LOCATION_PACKET_:
 			break;
 		default:
 		errno = 1;
@@ -16,7 +16,7 @@ void unpack(byte *bytes, void *buf, int flag) {
 }
 
 byte *packetgene(int type) {
-	byte *pack = (byte *)malloc(byte);
+	byte *pack = (byte *)malloc(sizeof(byte));
 	switch(type) {
 		case _EXISTS_:
 			*pack = 3;
@@ -24,11 +24,15 @@ byte *packetgene(int type) {
 		case _PASS_ERROR_:
 			*pack = 4;
 			break;
-		case _CONFIRMES_:
+		case _CONFIRMED_:
 			*pack = 5;
 			break;
 		default:
 			errno = 1;
 	}
 	return pack;
+}
+
+int typeof_packet(byte *bytes) {
+	return bytes[0];
 }

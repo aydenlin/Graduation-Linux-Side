@@ -1,13 +1,15 @@
 include ../makefile
-PROCESSOR=processor
-MAIN=footprint
-MODULES=certification.o network.o database_manager.o location.o	\		$(PROCESSOR)/executor.o $(PROCESSOR)/packer.o \
-		$(PROCESSOR)/processor.o
-SRCS=certification.c network.c database_manager.c location.c \
-	 $(PROCESSOR)/executor.c $(PROCESSOR)/packer.c \
-	 $(PROCESSOR)/processor.c footprint.c
-		
-all:$(MODULES) $(MAIN)
 
-$(MAIN) $(MODULES):$(SRCS)
-	
+MODULES=certification.o location.h packer.h
+SRC=certification.c location.c packer.c
+DEBUG=-gstabs
+DEBUG_PATH=../test
+all:$(MODULES)
+
+$(MODULES):$(SRC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/certification.o \
+					certification.c -I$(INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/location.o \
+					location.c -I$(INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/packer.o \
+					packer.c -I$(INC)

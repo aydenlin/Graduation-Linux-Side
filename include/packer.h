@@ -17,5 +17,6 @@
  */
 void unpack(byte *bytes, void *buf, int flag);
 byte *packetgene(int type);
-	
+int typeof_packet(byte *bytes);
+
 #endif /* _PACKER_H_ */

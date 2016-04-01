@@ -3,19 +3,23 @@
 
 #include <malloc.h>
 
+typedef struct location Location;
+typedef void Setloc(Location *L, double lon, double lat);
+typedef double Getlong(Location *L);
+typedef double Getlat(Location *L); 
+
+void init_location(Location *L, double lon, double lat);
+void setloc(Location *L,double longtitude, double latitude);
+double getlong(Location *L);
+double getlat(Location *L);
+
 typedef struct location {
 	double longtitude;
 	double latitude;
+	Setloc *setloc;
+	Getlong *getlong;
+	Getlat *getlat;
+	
 } Location;
-
-#define _INIT_LOCATION_(LOC, LONG, LAT) do { \
-	LOC = (Location *)malloc(sizeof(Location)); \
-	LOC->longtitude = LONG; \
-	LOC->latitude = LAT; \
-} while(0)
-
-void setloc(Location *L,double longtitude, double latitude);
-void getlong(Location *L);
-void getlat(Location *L);
 
 #endif /* _LOCATION_H_ */
