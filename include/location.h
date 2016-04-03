@@ -3,6 +3,15 @@
 
 #include <malloc.h>
 
+#define _INIT_LOCATION_MALLOC_(L, LONG, LAT) do { \
+	L = (Location *)malloc(sizeof(Location)); \
+	init_location(L, LONG, LAT); \
+} while(0)
+
+#define _INIT_LOCATION_(L, LONG, LAT) do { \
+	init_location(L, LONG, LAT); \
+} while(0)
+
 typedef struct location Location;
 typedef void Setloc(Location *L, double lon, double lat);
 typedef double Getlong(Location *L);

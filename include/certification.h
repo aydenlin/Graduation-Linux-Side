@@ -4,10 +4,12 @@
 #include <malloc.h>
 
 #define _INIT_CERTIFICATION_(C, u, p, i) do { \
-	C = (Certification_info *)malloc(sizeof(Certification_info); \
-	C->username = u; \
-	C->password = p; \
-	C->imei     = i; \
+	init_certification_info(&C, u, p, i); \
+} while(0)
+
+#define _INIT_CERTIFICATION_MALLOC_(C, u, p, i) do { \
+	C = (Certification_info *)malloc(sizeof(Certification_info)); \
+	init_certification_info(C, u, p, i); \
 } while(0)
 
 typedef struct certification_info Certification_info;

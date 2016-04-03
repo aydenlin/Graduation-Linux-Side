@@ -7,7 +7,7 @@
 #include <string.h>
 #include <malloc.h>
 #include <errno.h>
-
+#include <stdlib.h>
 extern int errno;
 
 /* 
@@ -30,21 +30,21 @@ void network_initialize(Network *network, int port) {
 	
 	network->list_head = NULL;
 	network->connfd = 0;	
-	network->network_listen = network_listen;
-	network->network_accept = network_accept;
-	network->read = read;
-	network->write = write;
+	network->listen = network_listen;
+	network->accept = network_accept;
+	network->read_from = network_read_from;
+	network->write_to = network_write_to;
 }
 
 void network_listen(Network *network) {
-	listen(network->listenfd, LISTEN_QUEUE_CAPACITY);
+	listen(network->listenfd, _LISTEN_QUEUE_CAPACITY_);
 }
 
 void network_accept(Network *network) { 
 	network->connfd = accept(network->listenfd, NULL, NULL);
 }
 
-int read_from(Network *network) {
+int network_read_from(Network *network) {
 	int nbytes;
 	socket_descriptor socket = network->connfd;
 	byte *recv = (byte *)malloc(_MAX_LENGTH_OF_PACKET_);
@@ -63,8 +63,8 @@ int read_from(Network *network) {
 
 }
 
-void write_to(Network *network, byte *packet, int nbytes) {
-	write(network->socket, packet, nbytes);
+void network_write_to(Network *network, byte *packet, int nbytes) {
+	write(network->connfd, packet, nbytes);
 }
 
 
