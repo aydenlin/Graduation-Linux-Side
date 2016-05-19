@@ -6,6 +6,8 @@ void init_location(Location *L, double lon, double lat) {
 	L->setloc     = setloc;
 	L->getlong    = getlong;
 	L->getlat     = getlat;
+	L->saving = saving;
+	L->loading = NULL;
 }
 
 void setloc(Location *L, double longtitude, double latitude) {
