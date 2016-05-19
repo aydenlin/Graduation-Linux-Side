@@ -8,6 +8,7 @@
 #include <malloc.h>
 #include <errno.h>
 #include <stdlib.h>
+
 extern int errno;
 
 /* 
@@ -50,9 +51,12 @@ int network_read_from(Network *network) {
 	byte *recv = (byte *)malloc(_MAX_LENGTH_OF_PACKET_);
 	List *element = (List *)malloc(sizeof(List));
 
+
 	while ((nbytes = read(socket, recv, _MAX_LENGTH_OF_PACKET_)) > 0) {
+		// Connection is disconnected.
 		if (nbytes == 0)
 			break;
+		// Connection errors.
 		if (nbytes < 0) {
 			errno = 1;
 			exit(1);
@@ -67,6 +71,14 @@ void network_write_to(Network *network, byte *packet, int nbytes) {
 	write(network->connfd, packet, nbytes);
 }
 
+void network_insert(Nework *network, List *work) {
+	list_insert(network->list_head, work);
+}
 
+byte * network_obtain(Network *network) {
+	return list_obj_get(list_obtain(network->list_head));	
+}
 
-
+int is_work_here(Network *network) {
+	return !is_empty(network->list_head);
+}

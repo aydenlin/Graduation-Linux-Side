@@ -49,3 +49,11 @@ List * list_search(List_head *lh, _TYPE_ e) {
 int equal(_TYPE_ former, _TYPE_ latter) {
 	return former == latter;
 }
+
+_TYPE_ list_get_obj(List *list) {
+	return list->obj;
+}
+
+int is_empty(List_head *lh) {
+	return lh->head == lh->tail == NULL;
+}

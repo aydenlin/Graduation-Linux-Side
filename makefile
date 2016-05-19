@@ -1,5 +1,6 @@
-INC=/home/ayden/Project/graduation/include
-LIB=/home/ayden/Project/graduation/lib
+INC=/home/ayden/project/graduation/include
+LIB=/home/ayden/project/graduation/lib
+
 SUBDIRS=$(shell ls -F | grep / | grep -v include | grep -v lib)
 
 define build

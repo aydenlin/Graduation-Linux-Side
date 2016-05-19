@@ -15,15 +15,18 @@ typedef void Network_accept(Network *network);
 typedef int Network_read_from(Network *network);
 typedef void Network_write_to(Network *network, byte *packet,
 		int nbytes);
-typedef void Network_obtain(Network *network);
+typedef byte * Network_obtain(Network *network);
+typedef void Network_insert(Network *network);
+typedef int Is_work_here(Network *network);
 
 void network_initialize(Network *network, int port);
 void network_listen(Network *network);
 void network_accept(Network *network);
 int  network_read_from(Network *network);
 void network_write_to(Network *network, byte *packet, int nbytes);
-void network_obtain(Network *network);
-
+byte * network_obtain(Network *network);
+void network_insert(Network *network);
+int is_work_here(Network *network); 
 
 typedef struct network {
 	int listenfd;
@@ -36,8 +39,8 @@ typedef struct network {
 	Network_read_from *read_from;
 	Network_write_to *write_to;
 	Network_obtain *obtain;
+	Network_insert *work_insert;
+	Is_work_here *is_work_here;
 } Network;
-
-
 
 #endif /* _NETWORK_H_ */

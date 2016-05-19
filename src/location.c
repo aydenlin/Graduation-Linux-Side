@@ -20,3 +20,9 @@ double getlong(Location *L) {
 double getlat(Location *L) {
 	return L->latitude;
 }
+void saving(Database_manager *d_manager, Location *L) {
+		
+}
+
+// loading is temporary no need.
+Location *loading(Database_manager *d_manager, Location *L) {}

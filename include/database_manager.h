@@ -3,26 +3,27 @@
 
 #include "my_mysql.h"
 
-typedef int Init(char *name, MYSQL **conn);
-typedef int Conn(MYSQL *conn, char *opt_host_name,
+typedef struct stmt_info {
+	char *table;
+	char *values;
+} Stmt_info;
+
+typedef struct database_manager {
+	MYSQL *connection;
+	int (*init)(char *name, MYSQL **conn);
+	int (*connecting)(MYSQL *conn, char *opt_host_name,
 			char *opt_user_name, char *opt_password,
-			char *opt_db_name, int opt_port_num, 
+			char *opt_db_name, int opt_port_num,
 			char *opt_socket_name, unsigned int opt_flags);
-typedef void Disconn(MYSQL *conn);
-typedef void Write_to_db(Database *D, void *data, int flag);
+	void (*disconnecting)(MYSQL *conn);
+	void (*write_to_db)(struct database_manager *D, 
+			Stmt_info *info, int flag);
+	void (*read_from_db)(struct database_manager *D, 
+			Stmt_info *info, char *stmt);
+} Database_manager;
 
-typedef struct database {
-	MYSQL *conn;
-	Init *init;
-	Conn *connect;
-	Disconn *disconnect;
-	Write_to_db *write_to_db;
-} Database;
-
-
-void database_init(Database *database, MYSQL *conn_,
-		Init init_, Conn conn_, Disconn disconn, 
-		Process process_);
-void write_to_db(Database *D, void *data, int flag);
+void database_init(Database_manager *database, MYSQL *conn_);
+void write_to_db(Database_manager *D, Stmt_info *info);
+void read_from_db(Database_manager *D, char *what);
 
 #endif /* _DATABASE_MANAGER_H_ */

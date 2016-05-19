@@ -1,4 +1,4 @@
-include ~/Project/graduation/makefile
+include ~/project/graduation/makefile
 
 all:libdatastruct.so
 libdatastruct.so:

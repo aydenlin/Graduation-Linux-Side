@@ -32,5 +32,7 @@ int equal(_TYPE_ former, _TYPE_ latter);
 void list_insert(List_head *lh, List *e);
 void list_delete(List_head *lh, List *e);
 List * list_search(List_head *lh, _TYPE_ e);
+_TYPE_ list_get_obj(List *list);
+int is_empty(List_head *lh);
 
 #endif /* _LIST_H_ */
