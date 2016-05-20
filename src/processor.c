@@ -24,27 +24,16 @@ void location_info_saving(Location *L, Location_struct *ls) {
 } 
 
 void control_message_gene(Network *network, int flag) {
-	List *work;
-	
 	switch(flag) {
 	case _EXISTS_ :
-		CONTROL_MESSAGE_SEND(network, work, _EXISTS_);
+		CONTROL_MESSAGE_SEND(network, _EXISTS_);
 		break;
 	case _PASS_ERROR_ :
-		CONTROL_MESSAGE_SEND(netowrk, work, _PASS_ERROR_);
-		break;
+		CONTROL_MESSAGE_SEND(netowrk, _PASS_ERROR_);
+		brea;
 	case _CONFIRMED_ :
-		CONTROL_MESSAGE_SEND(network, work, _CONFIRMED_);
+		CONTROL_MESSAGE_SEND(network, _CONFIRMED_);
 		break;
-	}
-}
-
-void processing(Network *network) {
-	byte *packet;
-
-	if (network->is_work_here(network)) {
-		packet = network->obtain(network);
-		packet_deal(packet);
 	}
 }
 
@@ -58,8 +47,17 @@ static void packet_deal(byte *packet) {
 	}
 }
 
-static void CONTROL_MESSAGE_SEND(Network *network, List *work, 
-		int flag) {
-	INIT_LIST_ELEMENT(work, flag);
-	network->network_insert(network, work);
+static void CONTROL_MESSAGE_SEND(Network *network, int flag) {
+	byte *packet = (byte
+	network_send(network, packet);
+}
+
+
+void processing(Network *network) {
+	byte *packet;
+
+	if (network->is_work_here(network)) {
+		packet = network->obtain(network);
+		packet_deal(packet);
+	}
 }

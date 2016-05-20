@@ -16,7 +16,7 @@ typedef int Network_read_from(Network *network);
 typedef void Network_write_to(Network *network, byte *packet,
 		int nbytes);
 typedef byte * Network_obtain(Network *network);
-typedef void Network_insert(Network *network);
+typedef void Network_send(Network *network, byte *packet);
 typedef int Is_work_here(Network *network);
 
 void network_initialize(Network *network, int port);
@@ -25,7 +25,7 @@ void network_accept(Network *network);
 int  network_read_from(Network *network);
 void network_write_to(Network *network, byte *packet, int nbytes);
 byte * network_obtain(Network *network);
-void network_insert(Network *network);
+void network_send(Network *network, byte *packet);
 int is_work_here(Network *network); 
 
 typedef struct network {
@@ -39,7 +39,7 @@ typedef struct network {
 	Network_read_from *read_from;
 	Network_write_to *write_to;
 	Network_obtain *obtain;
-	Network_insert *work_insert;
+	Network_send *send;
 	Is_work_here *is_work_here;
 } Network;
 

@@ -1,7 +1,7 @@
 #include "packer.h"
 #include <malloc.h>
 #include <errno.h>
-
+#include "types.h"
 extern int errno;
 
 void * unpack(byte *bytes) {
@@ -23,14 +23,15 @@ void * unpack(byte *bytes) {
 				(Location_struct *)malloc(sizeof(Location_struct));
 			location_info_ret->type = bytes[_PACKET_TYPE_POS_];
 			location_info_ret->longtitude = 
-				*(double *)(bytes + _PACKET_LOCATE_LONG_POS_);
+				*(double *)(bytes + _PACKET_LOCAT_LONG_POS_);
 			location_info_ret->latitude = 
-				*(double *)(bytes + _PACKET_LOCATE_LATI_POS_);
+				*(double *)(bytes + _PACKET_LOCAT_LATI_POS_);
 			return (void *)location_info_ret;
 			break;
 		default:
 		errno = 1;
 	}
+	return NULL;
 }
 
 byte *packetgene(int type) {

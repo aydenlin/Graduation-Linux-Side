@@ -17,7 +17,7 @@ typedef struct certification_info Certification_info;
 typedef void   Setuser_len(Certification_info *C, int len);
 typedef int    Getuser_len(Certification_info *C);
 typedef void   Setpass_len(Certification_info *C, int len);
-typedef int    Getpass_len(Certification_info *C, int len);
+typedef int    Getpass_len(Certification_info *C);
 typedef void   Setuser(Certification_info *C, char *user);
 typedef char * Getuser(Certification_info *C);
 typedef void   Setpass(Certification_info *C, char *pass);

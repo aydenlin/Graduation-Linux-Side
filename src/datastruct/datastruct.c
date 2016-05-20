@@ -55,5 +55,5 @@ _TYPE_ list_get_obj(List *list) {
 }
 
 int is_empty(List_head *lh) {
-	return lh->head == lh->tail == NULL;
+	return lh->head == NULL && lh->tail == NULL;
 }

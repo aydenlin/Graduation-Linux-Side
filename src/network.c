@@ -71,12 +71,14 @@ void network_write_to(Network *network, byte *packet, int nbytes) {
 	write(network->connfd, packet, nbytes);
 }
 
-void network_insert(Nework *network, List *work) {
-	list_insert(network->list_head, work);
+void network_send(Network *network, byte *packet) {
+	if (write(network->connfd, packet, _CONTROL_MESSAGE_LEN_) == -1) {
+		// Error deal, re-send or write to log about this error.
+	}
 }
 
 byte * network_obtain(Network *network) {
-	return list_obj_get(list_obtain(network->list_head));	
+	return list_get_obj(list_obtain(network->list_head));	
 }
 
 int is_work_here(Network *network) {

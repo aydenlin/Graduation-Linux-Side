@@ -2,6 +2,7 @@
 #define _LOCATION_H_
 
 #include <malloc.h>
+#include "database_manager.h"
 
 #define _INIT_LOCATION_MALLOC_(L, LONG, LAT) do { \
 	L = (Location *)malloc(sizeof(Location)); \
@@ -15,11 +16,11 @@
 typedef struct location {
 	double longtitude;
 	double latitude;
-	void (*setloc)(Location *L, double lon, double lat);
-	double (*getlong)(Location *L);
-	double (*getlat)(Location *L);
-	void (*saving)(Database_manager *d_manager, Location *L);
-	Location * (*loading)(Database_manager *d_manager, Location *L);
+	void (*setloc)(struct location *L, double lon, double lat);
+	double (*getlong)(struct location *L);
+	double (*getlat)(struct location *L);
+	void (*saving)(Database_manager *d_manager, struct location *L);
+	struct location * (*loading)(Database_manager *d_manager, struct location *L);
 } Location;
 
 void init_location(Location *L, double lon, double lat);

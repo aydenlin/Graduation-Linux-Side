@@ -17,13 +17,14 @@ typedef struct database_manager {
 			char *opt_socket_name, unsigned int opt_flags);
 	void (*disconnecting)(MYSQL *conn);
 	void (*write_to_db)(struct database_manager *D, 
-			Stmt_info *info, int flag);
+			Stmt_info *info);
 	void (*read_from_db)(struct database_manager *D, 
 			Stmt_info *info, char *stmt);
 } Database_manager;
 
 void database_init(Database_manager *database, MYSQL *conn_);
 void write_to_db(Database_manager *D, Stmt_info *info);
-void read_from_db(Database_manager *D, char *what);
+void read_from_db(Database_manager *D, Stmt_info *info, char *stmt);
 
 #endif /* _DATABASE_MANAGER_H_ */
+

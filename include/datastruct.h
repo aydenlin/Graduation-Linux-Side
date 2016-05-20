@@ -17,7 +17,7 @@
 } while(0)
 
 typedef struct list {
-	_TYPE_ obj ;
+	_TYPE_ obj;
 	struct list *prev;
 	struct list *next;
 } List;
