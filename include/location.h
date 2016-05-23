@@ -14,6 +14,7 @@
 } while(0)
 
 typedef struct location {
+	char *imei;
 	double longtitude;
 	double latitude;
 	void (*setloc)(struct location *L, double lon, double lat);

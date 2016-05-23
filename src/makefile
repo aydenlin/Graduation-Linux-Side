@@ -2,9 +2,9 @@ include ../makefile
 
 MYSQL_INC=/usr/include/mysql
 MODULES=certification.o location.o packer.o network.o \
-		database_manager.o
+		database_manager.o datastruct.o
 SRC=certification.c location.c packer.c network.c \
-	database_manager.c
+	database_manager.c datastruct/datastruct.c
 DEBUG=-gstabs
 DEBUG_PATH=../test
 
@@ -19,5 +19,9 @@ MODULES:$(SRC)
 					packer.c -I$(INC)
 	gcc $(DEBUG) -c -o $(DEBUG_PATH)/network.o \
 					network.c -I$(INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/tool.o \
+					tools.c -I$(INC)
 	gcc $(DEBUG) -c -o $(DEBUG_PATH)/database_manager.o \
 					database_manager.c -I$(INC) -I$(MYSQL_INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/datastruct.o \
+					datastruct/datastruct.c -I$(INC) -I$(MYSQL_INC)

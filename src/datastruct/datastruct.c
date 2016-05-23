@@ -2,6 +2,7 @@
 #include <malloc.h>
 
 void list_insert(List_head *lh, List *e) {
+	pthread_mutex_lock(&lh->locker);
 	if (lh->head == NULL) {
 		lh->head = e;
 		lh->tail = e;	
@@ -11,10 +12,12 @@ void list_insert(List_head *lh, List *e) {
 		e->next = lh->head;
 		lh->head = e;
 	}
+	pthread_mutex_unlock(&lh->locker);
 }
 
 List * list_obtain(List_head *lh) {
 	List * obtained = NULL;;
+	pthread_mutex_lock(&lh->locker);
 	if (lh->tail != NULL) {
 		obtained = lh->tail;
 		lh->tail = lh->tail->prev;
@@ -23,6 +26,7 @@ List * list_obtain(List_head *lh) {
 		else
 			lh->head = NULL;
 	}
+	pthread_mutex_unlock(&lh->locker);
 	return obtained;
 }
 
@@ -56,4 +60,13 @@ _TYPE_ list_get_obj(List *list) {
 
 int is_empty(List_head *lh) {
 	return lh->head == NULL && lh->tail == NULL;
+}
+
+void lh_init(List_head *lh) {
+	lh = (List_head *)malloc(sizeof(List_head));
+	lh->head = NULL;
+	lh->tail = NULL;
+	if (pthread_mutex_init(&lh->locker, NULL) != 0) {
+		free(lh);
+	}
 }

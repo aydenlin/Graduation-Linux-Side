@@ -29,12 +29,13 @@ void network_initialize(Network *network, int port) {
 
 	bind(*listenfd, (SA *)serveraddr, sizeof(struct sockaddr_in));
 	
-	network->list_head = NULL;
 	network->connfd = 0;	
 	network->listen = network_listen;
 	network->accept = network_accept;
 	network->read_from = network_read_from;
 	network->write_to = network_write_to;
+
+	lh_init(network->list_head);
 }
 
 void network_listen(Network *network) {
@@ -77,6 +78,7 @@ void network_send(Network *network, byte *packet) {
 	}
 }
 
+// you should rewrite this function as a blocking function.
 byte * network_obtain(Network *network) {
 	return list_get_obj(list_obtain(network->list_head));	
 }

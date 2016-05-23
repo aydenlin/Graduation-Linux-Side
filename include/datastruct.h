@@ -1,6 +1,7 @@
 #ifndef _LIST_H_
 #define _LIST_H_
 
+#include <pthread.h>
 #include <malloc.h>
 #include "types.h"
 
@@ -25,8 +26,10 @@ typedef struct list {
 typedef struct list_head {
 	List *head;
 	List *tail;
+	pthread_mutex_t locker;	
 } List_head;
 
+void lh_init(List_head *lh);
 // True if equal, False if not equal
 int equal(_TYPE_ former, _TYPE_ latter);
 void list_insert(List_head *lh, List *e);

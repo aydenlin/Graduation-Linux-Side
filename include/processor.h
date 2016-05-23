@@ -20,7 +20,8 @@ void certification_info_saving(Certification_info *C,
 	 Certifi_struct *cs);
 void location_info_saving(Location *L, Location_struct *ls);
 void control_message_gene(Network *network, int flag);
-void processing(byte *packet);
+void processing(Network *network, Database_manager *dbmanager,
+		Certification_info *certifi, Location *loc);
 
 typedef struct processor {
 	byte *packet;

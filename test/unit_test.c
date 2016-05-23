@@ -168,3 +168,5 @@ int * location_test() {
 		FAILED_RESULT_APPEND(result);
 	return result;
 }
+
+
