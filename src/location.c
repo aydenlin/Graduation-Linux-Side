@@ -2,13 +2,24 @@
 #include "tools.h"
 
 void init_location(Location *L, double lon, double lat) {
+	L->imei = NULL;
 	L->longtitude = lon;
 	L->latitude   = lat;
+	L->setimei	  = loc_setimei;
+	L->getimei    = loc_getimei;
 	L->setloc     = setloc;
 	L->getlong    = getlong;
 	L->getlat     = getlat;
-	L->saving	  = saving;
-	L->loading	  = NULL;
+	L->saving	  = location_saving;
+	L->loading = NULL;
+}
+
+void loc_setimei(Location *L, char *imei) {
+	L->imei = imei;
+}
+
+char * loc_getimei(Location *L) {
+	return L->imei;
 }
 
 void setloc(Location *L, double longtitude, double latitude) {
@@ -23,13 +34,13 @@ double getlong(Location *L) {
 double getlat(Location *L) {
 	return L->latitude;
 }
-void saving(Database_manager *d_manager, Location *L) {
-	Stmt_info *info;
-	info->table = "location";
-	info->values = strgen(3,"VALUES(", single_quotes(num2str(L->longtitude)),
-			single_quotes(num2str(L->latitude)));
-	d_manager->write_to_db(d_manager, info);
+static void location_saving(Database_manager *d_manager, Location *L) {
+	char *values = strgen("VALUES(", S_QUOTES(L->imei), ",", S_QUOTES(num2str(L->longtitude)),
+			",", S_QUOTES(num2str(L->latitude)), ")", "\0");
+	char *stmt = strgen(SP_APP("INSERT INTO"), SP_APP("location"), 
+			values, "\0");
+	d_manager->database_action(d_manager, stmt);
 }
 
 // loading is temporary no need.
-Location *loading(Database_manager *d_manager, Location *L) {}
+static Location * location_loading(Database_manager *d_manager, Location *L) {}

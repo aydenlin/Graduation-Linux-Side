@@ -6,8 +6,7 @@ void list_insert(List_head *lh, List *e) {
 	if (lh->head == NULL) {
 		lh->head = e;
 		lh->tail = e;	
-	}
-	else {
+	} else {
 		lh->head->prev = e;
 		e->next = lh->head;
 		lh->head = e;
@@ -30,7 +29,7 @@ List * list_obtain(List_head *lh) {
 	return obtained;
 }
 
-void list_delete(List_head *lh, List *e) {
+void list_del(List_head *lh, List *e) {
 	if (e->prev != NULL)
 		e->prev->next = e->next;
 	else 
@@ -55,6 +54,8 @@ int equal(_TYPE_ former, _TYPE_ latter) {
 }
 
 _TYPE_ list_get_obj(List *list) {
+	if (list == NULL)
+		return NULL;
 	return list->obj;
 }
 
@@ -62,11 +63,11 @@ int is_empty(List_head *lh) {
 	return lh->head == NULL && lh->tail == NULL;
 }
 
-void lh_init(List_head *lh) {
-	lh = (List_head *)malloc(sizeof(List_head));
-	lh->head = NULL;
-	lh->tail = NULL;
-	if (pthread_mutex_init(&lh->locker, NULL) != 0) {
-		free(lh);
+void lh_init(List_head **lh) {
+	*lh = (List_head *)malloc(sizeof(List_head));
+	(*lh)->head = NULL;
+	(*lh)->tail = NULL;
+	if (pthread_mutex_init(&(*lh)->locker, NULL) != 0) {
+		free(*lh);
 	}
 }

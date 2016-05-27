@@ -3,10 +3,11 @@
 
 #include <stdarg.h>
 
-#define _LOC_STR_MAX_ 100
 
-char * strgen(int num, ...);
+#define SP_APP(X) X, " "
+#define S_QUOTES(X) "'", X, "'"
+
+char * strgen(char *begin, ...);
 char * num2str(double num);
-char * single_quotes(char *str);
 
 #endif /* _TOOLS_H_ */

@@ -8,8 +8,8 @@
  * location info or certification info, function will
  * get the real type of struct by flag.
  */
-void * unpack(byte *bytes);
+void  unpack(byte *bytes, void *info);
 byte * packetgene(int type);
-int typeof_packet(byte *bytes);
+char typeof_packet(byte *bytes);
 
 #endif /* _PACKER_H_ */

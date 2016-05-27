@@ -1,45 +1,50 @@
 #include "tools.h"
+#include "types.h"
 #include <string.h>
 #include <malloc.h>
 #include <math.h>
-#include <string.h>
+#include <stdarg.h>
+#include <stdio.h>
 
-char * strgen(int num, ...) {
-	int count = num;
-	int len;
+char * strgen(char *begin, ...) {
+	int len = 0;
 	int offset = 0;
 	char *item;
 	int item_len = 0;
 	char *result;
 	va_list parg;
-	
-	va_start(parg, num);
+	char *holder = begin;
 
-	while (count--) {
-		len += strlen(va_arg(parg, char *));
+	va_start(parg, begin);
+	
+	while (1) {
+		if (strcmp(holder, "\0")==0) {
+			len += 1;
+			break;
+		} else 
+			len += strlen(holder);
+		printf("%s\n", holder);
+		holder = va_arg(parg, char *);
 	}
-	len += num;
-
-	va_start(parg, num);
-	result = malloc(len);
-	count = num;
 	
-	while (count--) {
-		item = (char *)va_arg(parg, char *);	
-		item_len = strlen(item);
+	va_start(parg, begin);
+	result = (char *)malloc(len);
+	item = begin;
 
-		strncpy(result, item, item_len);
+	while (1) {
+		if (strcmp(item, "\0") == 0) 
+			item_len =1;
+		else
+			item_len = strlen(item);
+
+		strncpy(result+offset, item, item_len);
 		offset += item_len;
-	}	
+		if (!strcmp(item, "\0"))
+			break;
+		item = (char *)va_arg(parg, char *);	
+	}
+	va_end(parg);
 	return result;
-}
-
-char * single_quotes(char *str) {
-	return strgen(3, "'", str, "'");
-}
-
-char * space_append(char *str) {
-	return strgen(2, str, " ");
 }
 
 char *num2str(double num) {

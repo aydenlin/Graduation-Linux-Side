@@ -8,6 +8,7 @@
 #include <malloc.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 extern int errno;
 
@@ -34,8 +35,8 @@ void network_initialize(Network *network, int port) {
 	network->accept = network_accept;
 	network->read_from = network_read_from;
 	network->write_to = network_write_to;
-
-	lh_init(network->list_head);
+	// mutex initialize...
+	lh_init(&network->list_head);
 }
 
 void network_listen(Network *network) {
@@ -62,7 +63,7 @@ int network_read_from(Network *network) {
 			errno = 1;
 			exit(1);
 		}
-		INIT_LIST_ELEMENTS(element, recv);
+		INIT_LIST_ELEMENT(element, recv);
 		list_insert(network->list_head, element);
 	}
 
