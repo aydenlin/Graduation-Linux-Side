@@ -3,7 +3,7 @@
 
 #include <stdarg.h>
 
-
+#define message(x) printf("Message : %s\n", x)
 #define SP_APP(X) X, " "
 #define S_QUOTES(X) "'", X, "'"
 

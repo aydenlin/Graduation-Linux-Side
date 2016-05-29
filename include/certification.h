@@ -23,8 +23,7 @@ typedef char * Getimei(Certification_info *C);
 typedef void   Saving(Certification_info *C, Database_manager *d_manager);
 typedef int	   Info_check(Certification_info *C, Database_manager *d_manager);
 
-void init_certification_info(Certification_info *C, char *username, 
-		char *pass, char *imei);
+void init_certification_info(Certification_info *C);
 void setuser(Certification_info *C, char *user);
 char * getuser(Certification_info *C);
 void set_userpass(Certification_info *C, char *pass);

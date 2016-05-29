@@ -1,6 +1,12 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 
+/************
+ * Boolean  *
+ ************/
+#define TRUE 1
+#define FALSE 0
+
 /******************
  * Packet defined *							
  ******************/
@@ -53,20 +59,5 @@
 #define _LOC_STR_MAX_ 30
 
 typedef char byte;
-/*
-typedef struct certifi_struct {
-	int type;
-	//int userlen;
-	//int passlen;
-	char *username;
-	char *password;
-	char *imei;
-} Certifi_struct;
 
-typedef struct location_struct {
-	int type;
-	double longtitude;
-	double latitude;
-} Location_struct;
-*/
 #endif /* _TYPES_H_ */

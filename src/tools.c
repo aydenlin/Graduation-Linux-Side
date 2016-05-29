@@ -23,7 +23,6 @@ char * strgen(char *begin, ...) {
 			break;
 		} else 
 			len += strlen(holder);
-		printf("%s\n", holder);
 		holder = va_arg(parg, char *);
 	}
 	

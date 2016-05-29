@@ -14,9 +14,9 @@ typedef struct stmt_info {
 typedef struct database_manager {
 	MYSQL *connection;
 	int (*init)(char *name, MYSQL **conn);
-	int (*connecting)(MYSQL *conn, char *opt_host_name,
+	void (*connecting)(struct database_manager* dbm, char *opt_host_name,
 			char *opt_user_name, char *opt_password,
-			char *opt_db_name, int opt_port_num,
+			char *opt_db_name, unsigned int opt_port_num,
 			char *opt_socket_name, unsigned int opt_flags);
 	void (*disconnecting)(MYSQL *conn);
 	MYSQL_RES * (*database_action)(struct database_manager *dbmanager, char *stmt);
@@ -24,6 +24,8 @@ typedef struct database_manager {
 
 void database_init(Database_manager *database, char *p_name);
 MYSQL_RES * database_action(Database_manager *dbmanager, char *stmt);
+void database_connecting(Database_manager *database, char *host, char *user,
+		char *pass, char *db, unsigned int port, char *socket, unsigned int flag);
 
 #endif /* _DATABASE_MANAGER_H_ */
 

@@ -1,8 +1,13 @@
 #include "datastruct.h"
 #include <malloc.h>
+#include "tools.h"
+#include "errno.h"
 
+#define _LIST_OBTAIN_LOOP_MAXNUM_ 10
+extern 
 void list_insert(List_head *lh, List *e) {
-	pthread_mutex_lock(&lh->locker);
+	int before = list_is_empty(lh);
+	pthread_mutex_lock(&lh->obtain_locker);
 	if (lh->head == NULL) {
 		lh->head = e;
 		lh->tail = e;	
@@ -11,12 +16,23 @@ void list_insert(List_head *lh, List *e) {
 		e->next = lh->head;
 		lh->head = e;
 	}
-	pthread_mutex_unlock(&lh->locker);
+	if (before)
+		pthread_cond_signal(&lh->empty_cond);
+	pthread_mutex_unlock(&lh->obtain_locker);
 }
 
 List * list_obtain(List_head *lh) {
-	List * obtained = NULL;;
-	pthread_mutex_lock(&lh->locker);
+	int count = 0;
+	List * obtained = NULL;
+		
+	while (list_is_empty(lh)) { 
+		if (count++ >= _LIST_OBTAIN_LOOP_MAXNUM_)
+			goto TIMEOUT;
+		message("list_obtain in loop");
+		pthread_cond_wait(&lh->empty_cond, &lh->empty_locker);
+	}
+	message("list_obtain after pthread_cond_wait");
+	pthread_mutex_lock(&lh->obtain_locker);
 	if (lh->tail != NULL) {
 		obtained = lh->tail;
 		lh->tail = lh->tail->prev;
@@ -25,8 +41,19 @@ List * list_obtain(List_head *lh) {
 		else
 			lh->head = NULL;
 	}
-	pthread_mutex_unlock(&lh->locker);
+	pthread_mutex_unlock(&lh->obtain_locker);
 	return obtained;
+TIMEOUT:
+	errno = 1;
+	return NULL;
+}
+
+
+int list_is_empty(List_head *lh) {
+	if (lh->head == NULL)
+		return TRUE;
+	else 
+		return FALSE;
 }
 
 void list_del(List_head *lh, List *e) {
@@ -67,7 +94,10 @@ void lh_init(List_head **lh) {
 	*lh = (List_head *)malloc(sizeof(List_head));
 	(*lh)->head = NULL;
 	(*lh)->tail = NULL;
-	if (pthread_mutex_init(&(*lh)->locker, NULL) != 0) {
+	if (pthread_mutex_init(&(*lh)->empty_locker, NULL) != 0)
 		free(*lh);
-	}
+	if (pthread_mutex_init(&(*lh)->obtain_locker, NULL) != 0)
+		free(*lh);
+	if (pthread_cond_init(&(*lh)->empty_cond, NULL) != 0)
+		free(*lh);
 }

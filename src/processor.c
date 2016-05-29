@@ -1,5 +1,6 @@
 #include "processor.h"
 #include "packer.h"
+#include "tools.h"
 #include <malloc.h>
 
 static void analyzer(byte *packet);
@@ -39,12 +40,16 @@ int packet_deal(void *info_mod,byte *packet, Network *network,
 
 static int certifi_deal(Certification_info *certifi_info, Network *network,
 		Database_manager *dbmanager) {
+	message("In certifi_deal");
 	int ret;
-	if ((ret = certifi_info->info_check(certifi_info, dbmanager)) ==  1) /* found */
+	if ((ret = certifi_info->info_check(certifi_info, dbmanager)) ==  1) {/* found */
+		message("==>1");
 		CONTROL_MESSAGE_SEND(network, _CONFIRMED_);
-	 else if (ret == 0) /* username or password wrong */
+	} else if (ret == 0) {/* username or password wrong */
+		message("==>2");
 		CONTROL_MESSAGE_SEND(network, _PASS_ERROR_);
-	else if (ret == 2) {/* no such imei in database */
+	} else if (ret == 2) {/* no such imei in database */
+		message("==>3");
 		certifi_info->saving(certifi_info, dbmanager);
 		CONTROL_MESSAGE_SEND(network, _CONFIRMED_);
 	}
@@ -65,18 +70,31 @@ void processing(Network *network, Database_manager *dbmanager,
 		Certification_info *certifi, Location *loc) {
 	byte *packet;
 	int ret;
-	while (0 < 1) {
-		if (network->is_work_here(network)) {
-			// network->obtain() function should 
-			// block, if there is no task.
-			packet = network->obtain(network);
+	message("processing before loop");
+	while (TRUE) {
+		message("processing in loop");
+		if (!network->is_alive(network)) { 
+			message("processing network is alive");
+			break;
 		}
+		message("processing before obtain");
+		// NOte: network->obtain is a function maybe 
+		// blocking thread, if there is nothing in
+		// the list queue.
+		errno = 0;
+		packet = network->obtain(network);
+		if (errno == 1)
+			continue;
+		message("processing obtain finished");
 		if (typeof_packet(packet) == _CERTIFICATION_PACKET_) {
+			message("processing certification_packet");
 			ret = packet_deal((void *)certifi, packet, network, dbmanager);
 			loc->setimei(loc, certifi->imei);
-		}
-		else if (typeof_packet(packet) == _LOCATION_PACKET_) 
+		} else if (typeof_packet(packet) == _LOCATION_PACKET_) {
+			message("processing location packet");
 			packet_deal((void *)loc, packet, network, dbmanager);				
+		}
+		message("processing after packet deal");
 	}
 
 }

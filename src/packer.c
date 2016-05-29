@@ -38,8 +38,6 @@ void unpack(byte *packet, void *info) {
 				_PACKET_CERTIFI_IMEI_LENGTH_);
 		imei[_PACKET_CERTIFI_IMEI_LENGTH_] = '\0';
 		
-		printf("%s,%s,%s\n", username, password, imei);
-
 		cerinfo->setimei(cerinfo, imei);
 		cerinfo->setuser(cerinfo, username);
 		cerinfo->setpass(cerinfo, password);

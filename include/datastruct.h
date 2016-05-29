@@ -24,10 +24,12 @@ typedef struct list {
 typedef struct list_head {
 	List *head;
 	List *tail;
-	pthread_mutex_t locker;	
+	pthread_cond_t  empty_cond;
+	pthread_mutex_t empty_locker;
+	pthread_mutex_t obtain_locker;
 } List_head;
 
-
+int list_is_empty(List_head *lh);
 List * list_obtain(List_head *lh);
 void lh_init(List_head **lh);
 // True if equal, False if not equal

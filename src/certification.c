@@ -4,11 +4,10 @@
 
 static int info_check(Certification_info *C, Database_manager *D);
 
-void init_certification_info(Certification_info *C, char *username, 
-		char *pass, char *imei) {
-	C->username = username;
-	C->password = pass;
-	C->imei = imei;
+void init_certification_info(Certification_info *C) {
+	C->username = NULL;
+	C->password = NULL;
+	C->imei = NULL;
 	C->setuser = setuser;
 	C->getuser = getuser;
 	C->setpass = set_userpass;

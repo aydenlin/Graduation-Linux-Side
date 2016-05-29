@@ -1,10 +1,10 @@
 #include "location.h"
 #include "tools.h"
 
-void init_location(Location *L, double lon, double lat) {
+void init_location(Location *L) {
 	L->imei = NULL;
-	L->longtitude = lon;
-	L->latitude   = lat;
+	L->longtitude = 0;
+	L->latitude   = 0;
 	L->setimei	  = loc_setimei;
 	L->getimei    = loc_getimei;
 	L->setloc     = setloc;

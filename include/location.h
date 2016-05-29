@@ -26,7 +26,7 @@ typedef struct location {
 	struct location * (*loading)(Database_manager *d_manager, struct location *L);
 } Location;
 
-void init_location(Location *L, double lon, double lat);
+void init_location(Location *L);
 void loc_setimei(Location *L, char *imei);
 char * loc_getimei(Location *L);
 void setloc(Location *L,double longtitude, double latitude);
