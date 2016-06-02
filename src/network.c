@@ -80,6 +80,7 @@ int network_read_from(Network *network) {
 		// Connection is disconnected.
 		 if (nbytes == 0) {
 			message("nbytes is 0");
+			errno = 1;
 			network->set_dead(network);
 			exit(1);
 		}

@@ -4,6 +4,7 @@
 #include "errno.h"
 
 #define _LIST_OBTAIN_LOOP_MAXNUM_ 10
+
 extern 
 void list_insert(List_head *lh, List *e) {
 	int before = list_is_empty(lh);
@@ -29,6 +30,8 @@ List * list_obtain(List_head *lh) {
 		if (count++ >= _LIST_OBTAIN_LOOP_MAXNUM_)
 			goto TIMEOUT;
 		message("list_obtain in loop");
+		// Should provide a timeout version, if not thread
+		// will be clocked.
 		pthread_cond_wait(&lh->empty_cond, &lh->empty_locker);
 	}
 	message("list_obtain after pthread_cond_wait");
@@ -42,8 +45,12 @@ List * list_obtain(List_head *lh) {
 			lh->head = NULL;
 	}
 	pthread_mutex_unlock(&lh->obtain_locker);
+
+	obtained->prev = NULL;
+	obtained->next = NULL;
 	return obtained;
 TIMEOUT:
+	message("timeout");
 	errno = 1;
 	return NULL;
 }
@@ -100,4 +107,14 @@ void lh_init(List_head **lh) {
 		free(*lh);
 	if (pthread_cond_init(&(*lh)->empty_cond, NULL) != 0)
 		free(*lh);
+	(*lh)->release_queue = (List **)malloc(RELEASE_QUEUE_CAPACITY);
 }
+
+void list_release_enqueue(List_head *lh, List *list) {
+	
+}
+
+void list_release_dequeue(List_head *lh) {
+
+}
+

@@ -51,3 +51,8 @@ char *num2str(double num) {
 	sprintf(ret, "%f", num);
 	return ret;
 }
+
+void release(void **ptr) {
+	free(*ptr);
+	*ptr = NULL;
+}

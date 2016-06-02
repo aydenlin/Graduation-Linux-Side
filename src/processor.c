@@ -3,19 +3,21 @@
 #include "tools.h"
 #include <malloc.h>
 
-static void analyzer(byte *packet);
-int packet_deal(void *info_mod,byte *packet, Network *network,
+static int packet_deal(void *info_mod,byte *packet, Network *network,
 		Database_manager *dbmanager);
 static void CONTROL_MESSAGE_SEND(Network *network, int flag);
-static int certifi_deal(Certification_info *certifi_info, Network *network,
-		Database_manager *dbmanager);
+static int certifi_deal(Certification_info *certifi_info, Network *network,Database_manager *dbmanager);
 static void loc_deal(Location *loc, Database_manager *dbmanager);
 
 byte * processor_work_obtain(Network *network) {
 	return network->obtain(network);
 }
 
-int packet_deal(void *info_mod,byte *packet, Network *network,
+void processor_init(Processor *processor) {
+	processor->processing = processing; 
+}
+
+static int packet_deal(void *info_mod,byte *packet, Network *network,
 		Database_manager *dbmanager) {
 	int packet_type = typeof_packet(packet);
 	Certification_info *cerinfo;
@@ -43,13 +45,10 @@ static int certifi_deal(Certification_info *certifi_info, Network *network,
 	message("In certifi_deal");
 	int ret;
 	if ((ret = certifi_info->info_check(certifi_info, dbmanager)) ==  1) {/* found */
-		message("==>1");
 		CONTROL_MESSAGE_SEND(network, _CONFIRMED_);
 	} else if (ret == 0) {/* username or password wrong */
-		message("==>2");
 		CONTROL_MESSAGE_SEND(network, _PASS_ERROR_);
 	} else if (ret == 2) {/* no such imei in database */
-		message("==>3");
 		certifi_info->saving(certifi_info, dbmanager);
 		CONTROL_MESSAGE_SEND(network, _CONFIRMED_);
 	}
@@ -66,7 +65,7 @@ static void CONTROL_MESSAGE_SEND(Network *network, int flag) {
 }
 
 
-void processing(Network *network, Database_manager *dbmanager, 
+static void processing(Network *network, Database_manager *dbmanager, 
 		Certification_info *certifi, Location *loc) {
 	byte *packet;
 	int ret;
@@ -74,7 +73,7 @@ void processing(Network *network, Database_manager *dbmanager,
 	while (TRUE) {
 		message("processing in loop");
 		if (!network->is_alive(network)) { 
-			message("processing network is alive");
+			message("processing network is Dead");
 			break;
 		}
 		message("processing before obtain");
@@ -99,10 +98,3 @@ void processing(Network *network, Database_manager *dbmanager,
 
 }
 
-static int is_username_exists(Database_manager *d_manager, 
-		Certification_info *cerinfo) {
-	Stmt_info *stmt_info = (Stmt_info *)malloc(sizeof(Stmt_info));
-	stmt_info->field = "name";
-	stmt_info->table = "users";
-	stmt_info->compare = cerinfo->username;
-}

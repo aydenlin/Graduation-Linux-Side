@@ -1,3 +1,14 @@
+/*
+ * Note:This program haven't compeletly done yet, it just can 
+ * Running and Send deal with packet but still have problem, 
+ * such as memory leak, cause of memory allocate by network thread
+ * is remain in occupy althouth its no use on the future, and 
+ * Blocking during a very longtime, this can deal by provide a 
+ * timeout version of list_obtain, and should provide cleanning
+ * function to network.
+ */
+
+
 #include "Server.h"
 #include "processor.h"
 #include "database_manager.h"
@@ -60,25 +71,27 @@ static void request_processing(Network *network_,
 		message("request_processing");
 		pthread_t tid;
 		Network *network = network_;
+		Processor *processor = (Processor *)malloc(sizeof(Processor));
 		Database_manager *dbm = dbm_;
 		Certification_info *cerinfo = 
 			(Certification_info *)malloc(sizeof(Certification_info));
 		Location *locinfo = 
 			(Location *)malloc(sizeof(Location));
 		
-		initialize(cerinfo, locinfo);
+		initialize(cerinfo, processor, locinfo);
 		pthread_create(&tid, NULL, waiting_for, (void *)network);
-		processing(network, dbm, cerinfo, locinfo);
+		processor->processing(network, dbm, cerinfo, locinfo);
 	} else {
 		printf("fork() error in MAIN->request_processing");
 		return;
 	}
 }
 
-static void initialize(Certification_info *cerinfo, Location *locinfo) {
+static void initialize(Certification_info *cerinfo, 
+		Processor *processor, Location *locinfo)  {
 	init_certification_info(cerinfo);
 	init_location(locinfo);	
-
+	processor_init(processor);
 }
 
 static void * waiting_for(void *arg) {

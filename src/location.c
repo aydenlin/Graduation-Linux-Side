@@ -40,6 +40,8 @@ static void location_saving(Database_manager *d_manager, Location *L) {
 	char *stmt = strgen(SP_APP("INSERT INTO"), SP_APP("location"), 
 			values, "\0");
 	d_manager->database_action(d_manager, stmt);
+	release((void *)values);
+	release((void *)stmt);
 }
 
 // loading is temporary no need.

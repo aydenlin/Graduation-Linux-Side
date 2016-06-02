@@ -43,11 +43,27 @@ char * getimei(Certification_info *C) {
 }
 
 static void  certifi_saving(Certification_info *C, Database_manager *d_manager) {
-	char *values = strgen("VALUES(", S_QUOTES(C->imei),",", S_QUOTES(C->username), 
+	char *stmt;
+	char *values;
+	MYSQL_ROW row;	
+	// Is username already exists ?
+	stmt = strgen("SELECT count(", C->username, ") FROM users;", END);	
+	if ((row = mysql_fetch_row(d_manager->database_action(d_manager, stmt))) == NULL) {
+		release((void *)stmt);
+		printf("mysql error in certifi_saving()\n");
+		exit;
+	}	
+	release((void *)stmt);
+	if (strcmp(row[0], "0"))
+		exit(0);
+	// Account Register
+	values = strgen("VALUES(", S_QUOTES(C->imei),",", S_QUOTES(C->username), 
 			",", S_QUOTES(C->password), ")", "\0");
-	
-	char *stmt = strgen(SP_APP("INSERT INTO"), SP_APP("users"), values, ";", "\0");
+	stmt = strgen(SP_APP("INSERT INTO"), SP_APP("users"), values, ";", END);
 	d_manager->database_action(d_manager, stmt);
+	
+	release((void *)values);
+	release((void *)stmt);
 }
 
 static int info_check(Certification_info *C, Database_manager *d_manager) {
@@ -58,10 +74,11 @@ static int info_check(Certification_info *C, Database_manager *d_manager) {
 			SP_APP("FROM"), SP_APP("users"), SP_APP("WHERE"),
 			"users.imei", "=", S_QUOTES(C->imei), ";", "\0");
 	res = d_manager->database_action(d_manager, stmt);	
-	
+	release((void *)stmt);
+
 	if ((row = mysql_fetch_row(res)) != NULL) {
 		if (strcmp(row[0], C->username) == 0 &&
-				strcmp(row[1], C->password) == 0)
+				strcmp(row[1], C->password) == 0)	
 			return 1;
 		else 
 			return 0;

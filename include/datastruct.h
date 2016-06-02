@@ -7,7 +7,7 @@
 
 
 #define _TYPE_ byte *
-
+#define RELEASE_QUEUE_CAPACITY (sizeof(List)*100)
 #define INIT_LIST_ELEMENT(list, val) (({do { \
 	list = (List *)malloc(sizeof(List)); \
 	list->obj = val; \
@@ -16,17 +16,18 @@
 } while(0);}), list)
 
 typedef struct list {
-	_TYPE_ obj;
 	struct list *prev;
 	struct list *next;
+	_TYPE_ obj;
 } List;
 
 typedef struct list_head {
-	List *head;
-	List *tail;
-	pthread_cond_t  empty_cond;
 	pthread_mutex_t empty_locker;
 	pthread_mutex_t obtain_locker;
+	pthread_cond_t  empty_cond;
+	List *head;
+	List *tail;
+	List **release_queue;	
 } List_head;
 
 int list_is_empty(List_head *lh);

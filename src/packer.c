@@ -5,6 +5,7 @@
 #include <errno.h>
 #include "types.h"
 #include <string.h>
+#include <stdio.h>
 
 extern int errno;
 
@@ -13,13 +14,16 @@ void unpack(byte *packet, void *info) {
 	Certification_info *cerinfo;
 	Location *locinfo;
 	
+	FILE *fp;
 	char *imei;
 	// Certification related variable
 	char *username;
 	char *password;
 	// Location related variable
-	char *longtitude;
-	char *latitude;
+	double *longtitude;
+	double *latitude;
+
+	fp = fopen("./log", "a+");
 
 	switch (type) {
 	case _CERTIFICATION_PACKET_:
@@ -44,8 +48,14 @@ void unpack(byte *packet, void *info) {
 		break;
 	case _LOCATION_PACKET_:
 		locinfo = (Location *)info;
-		longtitude = (char *)malloc(_LOC_STR_MAX_);
-		latitude = (char *)malloc(_LOC_STR_MAX_);
+		longtitude = (double *)(packet + _PACKET_LOCAT_LONG_POS_);
+		latitude = (double *)(packet + _PACKET_LOCAT_LATI_POS_);
+		
+		fwrite(longtitude, sizeof(double), 1, fp);
+		fwrite(latitude, sizeof(double), 1, fp);
+		
+		fclose(fp);
+		printf("longtitude is %f, Latitude is %f\n", *longtitude, *latitude);
 
 		locinfo->setloc(locinfo, *((double *)(packet+_PACKET_LOCAT_LONG_POS_)),
 				*((double *)(packet+_PACKET_LOCAT_LATI_POS_)));		
