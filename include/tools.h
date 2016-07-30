@@ -3,6 +3,11 @@
 
 #include <stdarg.h>
 #include "packer.h"
+#include "network.h"
+#include "certification.h"
+#include "database_manager.h"
+#include "location.h"
+#include "processor.h"
 
 #ifdef DEBUG
 	#define message(msg) printf("In function %s at line %d\n : %s", \
@@ -10,6 +15,11 @@
 #else
 	#define message(msg) 
 #endif
+
+#define release(ptr) ({ \
+	free(ptr); \
+	ptr = NULL; \
+})
 
 #define END "\0"
 #define SP_APP(X) X, " "
@@ -20,6 +30,12 @@
 
 char * strgen(char *begin, ...);
 char * num2str(double num);
-void release(void **ptr);
+
+// Tools for Top level of Server
+static void request_processing(Network *network, Database_manager *dbm);
+static void * waiting_for(void *arg);
+static void testing(Network *network);
+static void initialize(Certification_info *cerinfo, Processor *processor,
+		Location *locinfo);
 
 #endif /* _TOOLS_H_ */

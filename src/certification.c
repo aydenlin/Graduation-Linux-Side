@@ -49,11 +49,11 @@ static void  certifi_saving(Certification_info *C, Database_manager *d_manager) 
 	// Is username already exists ?
 	stmt = strgen("SELECT count(", C->username, ") FROM users;", END);	
 	if ((row = mysql_fetch_row(d_manager->database_action(d_manager, stmt))) == NULL) {
-		release((void **)&stmt);
+		release(stmt);
 		printf("mysql error in certifi_saving()\n");
 		exit;
 	}	
-	release((void **)&stmt);
+	release(stmt);
 	if (strcmp(row[0], "0"))
 		exit(0);
 	// Account Register
@@ -62,8 +62,8 @@ static void  certifi_saving(Certification_info *C, Database_manager *d_manager) 
 	stmt = strgen(SP_APP("INSERT INTO"), SP_APP("users"), values, ";", END);
 	d_manager->database_action(d_manager, stmt);
 	
-	release((void **)&values);
-	release((void **)&stmt);
+	release(values);
+	release(stmt);
 }
 
 static int info_check(Certification_info *C, Database_manager *d_manager) {
@@ -74,7 +74,7 @@ static int info_check(Certification_info *C, Database_manager *d_manager) {
 			SP_APP("FROM"), SP_APP("users"), SP_APP("WHERE"),
 			"users.imei", "=", S_QUOTES(C->imei), ";", "\0");
 	res = d_manager->database_action(d_manager, stmt);	
-	release((void **)&stmt);
+	release(stmt);
 
 	if ((row = mysql_fetch_row(res)) != NULL) {
 		if (strcmp(row[0], C->username) == 0 &&

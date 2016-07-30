@@ -17,20 +17,12 @@ SERVER:$(SERVER).c MODULES
 		-L/home/ayden/project/graduation/lib -lmy_mysql
 	rm ./*.o
 MODULES:$(SRC)
-	gcc $(DEBUG) -c -o $(DEBUG_PATH)/database_manager.o \
-					database_manager.c -I$(INC) -I$(MYSQL_INC) 
-	gcc $(DEBUG) -c -o $(DEBUG_PATH)/tools.o \
-					tools.c -I$(INC)
-	gcc $(DEBUG) -c -o $(DEBUG_PATH)/certification.o \
-					certification.c  -I$(INC) -I$(MYSQL_INC) 
-	gcc $(DEBUG) -c -o $(DEBUG_PATH)/location.o \
-					location.c -I$(INC) -I$(MYSQL_INC)
-	gcc $(DEBUG) -c -o $(DEBUG_PATH)/packer.o \
-					packer.c -I$(INC) -I$(MYSQL_INC)
-	gcc $(DEBUG) -c -o $(DEBUG_PATH)/network.o \
-					network.c -I$(INC)
-	gcc $(DEBUG) -c -o $(DEBUG_PATH)/datastruct.o \
-					datastruct/datastruct.c -I$(INC) -I$(MYSQL_INC)
-	gcc $(DEBUG) -c -o $(DEBUG_PATH)/processor.o \
-					processor.c -I$(INC) -I$(MYSQL_INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/database_manager.o database_manager.c -I$(INC) -I$(MYSQL_INC) 
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/tools.o tools.c -I$(INC) -I$(MYSQL_INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/certification.o certification.c  -I$(INC) -I$(MYSQL_INC) 
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/location.o location.c -I$(INC) -I$(MYSQL_INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/packer.o packer.c -I$(INC) -I$(MYSQL_INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/network.o network.c -I$(INC) -I$(MYSQL_INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/datastruct.o datastruct/datastruct.c -I$(INC) -I$(MYSQL_INC)
+	gcc $(DEBUG) -c -o $(DEBUG_PATH)/processor.o processor.c -I$(INC) -I$(MYSQL_INC)
 	

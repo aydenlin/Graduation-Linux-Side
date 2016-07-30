@@ -4,7 +4,6 @@
  */
 
 
-#include "Server.h"
 #include "processor.h"
 #include "database_manager.h"
 #include "location.h"

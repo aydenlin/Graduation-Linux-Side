@@ -52,11 +52,6 @@ char *num2str(double num) {
 	return ret;
 }
 
-void release(void **ptr) {
-	free(*ptr);
-	*ptr = NULL;
-}
-
 char * spRem(char *str) {
 	char *begin = str;
 	while (*str != ' ') str++;
