@@ -6,7 +6,7 @@ MODULES=location.o certification.o packer.o network.o tools.o\
 		database_manager.o datastruct.o processor.o
 SRC=certification.c location.c packer.c network.c \
 	database_manager.c datastruct/datastruct.c processor.c
-DEBUG=-gstabs
+DEBUG=-gstabs -D DEBUG
 DEBUG_PATH=.
 
 all:MODULES SERVER

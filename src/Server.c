@@ -1,11 +1,6 @@
 /*
- * Note:This program haven't compeletly done yet, it just can 
- * Running and Send deal with packet but still have problem, 
- * such as memory leak, cause of memory allocate by network thread
- * is remain in occupy althouth its no use on the future, and 
- * Blocking during a very longtime, this can deal by provide a 
- * timeout version of list_obtain, and should provide cleanning
- * function to network.
+ * You need to provide an action 
+ * for children terminate signal.
  */
 
 
@@ -45,7 +40,7 @@ int main(int argc, char **argv) {
 	dbm->connecting(dbm, _HOST_NAME_, _USER_NAME_, 
 			_PASSWORD_,_DB_NAME_, _PORT_NUM_, _SOCKET_NAME_, _FLAGS_);
 	network->listen(network);
-	
+
 	while (TRUE) {
 		network->accept(network);
 		request_processing(network, dbm);

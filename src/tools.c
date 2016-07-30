@@ -56,3 +56,10 @@ void release(void **ptr) {
 	free(*ptr);
 	*ptr = NULL;
 }
+
+char * spRem(char *str) {
+	char *begin = str;
+	while (*str != ' ') str++;
+	*str = '\0';
+	return begin;
+}

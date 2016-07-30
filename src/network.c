@@ -66,16 +66,19 @@ void network_accept(Network *network) {
 
 int network_read_from(Network *network) {
 	int nbytes;
+	byte *recv;
+	List *element;
 	socket_descriptor socket = network->connfd;
-	byte *recv = (byte *)malloc(_MAX_LENGTH_OF_PACKET_);
-	List *element = (List *)malloc(sizeof(List));
+
 	message("In network_read_from, before loop");
 	while (TRUE) {		
 		message("network_read_from in loop");
+		recv = (byte*)malloc(_MAX_LENGTH_OF_PACKET_);
 		while ((nbytes = read(socket, recv, _MAX_LENGTH_OF_PACKET_)) > 0) {
 			message("network_read_from read finished");
 			INIT_LIST_ELEMENT(element, recv);
 			list_insert(network->list_head, element);
+			recv = (byte*)malloc(_MAX_LENGTH_OF_PACKET_);
 		}
 		// Connection is disconnected.
 		 if (nbytes == 0) {

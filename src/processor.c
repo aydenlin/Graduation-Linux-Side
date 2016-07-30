@@ -36,7 +36,6 @@ static int packet_deal(void *info_mod,byte *packet, Network *network,
 		loc_deal(locinfo, dbmanager);
 		break;
 	}
-
 	return ret;
 }
 
@@ -77,24 +76,25 @@ static void processing(Network *network, Database_manager *dbmanager,
 			break;
 		}
 		message("processing before obtain");
-		// NOte: network->obtain is a function maybe 
-		// blocking thread, if there is nothing in
-		// the list queue.
+		/*
+		 * Note: network->obtain is a function maybe 
+		 * blocking thread, if there is nothing in
+		 * the list queue.
+		 */
 		errno = 0;
 		packet = network->obtain(network);
 		if (errno == 1)
 			continue;
 		message("processing obtain finished");
-		if (typeof_packet(packet) == _CERTIFICATION_PACKET_) {
+		if (IS_CERTIFI_PACKET(packet)) {
 			message("processing certification_packet");
 			ret = packet_deal((void *)certifi, packet, network, dbmanager);
 			loc->setimei(loc, certifi->imei);
-		} else if (typeof_packet(packet) == _LOCATION_PACKET_) {
+		} else if (IS_LOCAT_PACKET(packet)) {
 			message("processing location packet");
 			packet_deal((void *)loc, packet, network, dbmanager);				
 		}
 		message("processing after packet deal");
+		free(packet);
 	}
-
 }
-

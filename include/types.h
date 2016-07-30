@@ -4,8 +4,8 @@
 /************
  * Boolean  *
  ************/
-#define TRUE 1
-#define FALSE 0
+#define TRUE (1)
+#define FALSE (0)
 
 /******************
  * Packet defined *							
@@ -14,8 +14,8 @@
 #define _PACKET_TYPE_LENGTH_ 1
 
 /*****************************************************
- * Note : #define that comment out is temporary unuse,
- * it may in use in future.
+ * Note : such #define that comment out is temporary *
+ * unuse it may in use in future.					 *
  ****************************************************/
 // Certification field len
 //#define _PACKET_CERTIFI_USER_LEN_LENGTH_ 1

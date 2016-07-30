@@ -88,9 +88,11 @@ int equal(_TYPE_ former, _TYPE_ latter) {
 }
 
 _TYPE_ list_get_obj(List *list) {
+	_TYPE_ obj = list->obj;
 	if (list == NULL)
 		return NULL;
-	return list->obj;
+	free(list);
+	return obj;
 }
 
 int is_empty(List_head *lh) {

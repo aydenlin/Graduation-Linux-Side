@@ -32,14 +32,14 @@ void unpack(byte *packet, void *info) {
 		password = (char *)malloc(_PACKET_CERTIFI_PASS_LENGTH_+1);
 		imei = (char *)malloc(_PACKET_CERTIFI_IMEI_LENGTH_+1);
 		
-		strncpy(username, packet+_PACKET_CERTIFI_USER_POS_, 
-				_PACKET_CERTIFI_USER_LENGTH_);
+		spRem(strncpy(username, packet+_PACKET_CERTIFI_USER_POS_, 
+				_PACKET_CERTIFI_USER_LENGTH_));
 		username[_PACKET_CERTIFI_USER_LENGTH_] = '\0';
-		strncpy(password, packet+_PACKET_CERTIFI_PASS_POS_,
-				_PACKET_CERTIFI_PASS_LENGTH_);
+		spRem(strncpy(password, packet+_PACKET_CERTIFI_PASS_POS_,
+				_PACKET_CERTIFI_PASS_LENGTH_));
 		password[_PACKET_CERTIFI_PASS_LENGTH_] = '\0';
-		strncpy(imei, packet+_PACKET_CERTIFI_IMEI_POS_,
-				_PACKET_CERTIFI_IMEI_LENGTH_);
+		spRem(strncpy(imei, packet+_PACKET_CERTIFI_IMEI_POS_,
+				_PACKET_CERTIFI_IMEI_LENGTH_));
 		imei[_PACKET_CERTIFI_IMEI_LENGTH_] = '\0';
 		
 		cerinfo->setimei(cerinfo, imei);
