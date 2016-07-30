@@ -58,3 +58,38 @@ char * spRem(char *str) {
 	*str = '\0';
 	return begin;
 }
+
+void request_processing(Network *network_, 
+		Database_manager *dbm_) {
+	
+	if (fork() == 0) {
+		message("request_processing");
+		pthread_t tid;
+		Network *network = network_;
+		Processor *processor = (Processor *)malloc(sizeof(Processor));
+		Database_manager *dbm = dbm_;
+		Certification_info *cerinfo = 
+			(Certification_info *)malloc(sizeof(Certification_info));
+		Location *locinfo = 
+			(Location *)malloc(sizeof(Location));
+		
+		initialize(cerinfo, processor, locinfo);
+		pthread_create(&tid, NULL, waiting_for, (void *)network);
+		processor->processing(network, dbm, cerinfo, locinfo);
+	} else {
+		printf("fork() error in MAIN->request_processing");
+		return;
+	}
+}
+
+static void initialize(Certification_info *cerinfo, 
+		Processor *processor, Location *locinfo)  {
+	init_certification_info(cerinfo);
+	init_location(locinfo);	
+	processor_init(processor);
+}
+
+static void * waiting_for(void *arg) {
+	Network *network = (Network *)arg;
+	network->read_from(network);
+}

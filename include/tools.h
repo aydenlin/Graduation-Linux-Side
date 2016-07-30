@@ -32,9 +32,8 @@ char * strgen(char *begin, ...);
 char * num2str(double num);
 
 // Tools for Top level of Server
-static void request_processing(Network *network, Database_manager *dbm);
+void request_processing(Network *network, Database_manager *dbm);
 static void * waiting_for(void *arg);
-static void testing(Network *network);
 static void initialize(Certification_info *cerinfo, Processor *processor,
 		Location *locinfo);
 
