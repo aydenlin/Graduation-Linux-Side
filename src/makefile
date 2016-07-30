@@ -12,7 +12,7 @@ DEBUG_PATH=.
 all:MODULES SERVER
 
 SERVER:$(SERVER).c MODULES
-	gcc $(DEBUG) -o $(SERVER) $(SERVER).c $(MODULES) -I$(INC) -I$(MYSQL_INC)  \
+	gcc $(DEBUG) -o ../bin/$(SERVER) $(SERVER).c $(MODULES) -I$(INC) -I$(MYSQL_INC)  \
 		-L/usr/lib64 -lmysqlclient -lpthread -lz -lm -lssl -lcrypto -ldl \
 		-L/home/ayden/project/graduation/lib -lmy_mysql
 	rm ./*.o
