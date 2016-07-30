@@ -1,4 +1,4 @@
-include ../makefile
+include ../env
 
 SERVER=Server
 MYSQL_INC=/usr/include/mysql
